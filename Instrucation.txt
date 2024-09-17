@@ -1,5 +1,5 @@
 Instructions to run the script:
-
+d4$Pb2iA9p4v(+Q%
 Open PowerShell as Administrator:
 Click on the Start menu, type powershell, right-click on Windows PowerShell, and select Run as administrator.
 
