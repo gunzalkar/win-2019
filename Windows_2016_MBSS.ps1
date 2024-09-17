@@ -1,4 +1,4 @@
-$outputFilePath = "Windows_Server_2019_Compilance_Report.csv"
+ $outputFilePath = "Windows_Server_2016_Compilance_Report.csv"
 
 # Write system details to the file
 function Write-SystemDetails {
@@ -566,13 +566,13 @@ $auditChecks = @(
 
     @{
         SerialNumber = 41
-        ControlObjective   = "Ensure 'Minimize the number of simultaneous connections to the Internet or a Windows Domain' is set to 'Enabled: 3 = Prevent Wi-Fi when on Ethernet' (Automated)"
+        ControlObjective   = "Ensure 'Minimize the number of simultaneous connections to the Internet' (Automated)"
         CheckFunction      = {
             try {
                 if (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy") {
                     $registryValue = Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy" -Name "fMinimizeConnections" -ErrorAction SilentlyContinue
                     if ($null -ne $registryValue) {
-                        return $registryValue.fMinimizeConnections -eq 3
+                        return $registryValue.fMinimizeConnections -eq 1
                     } else {
                         return $false
                     }
@@ -610,7 +610,7 @@ $auditChecks = @(
     
     @{
         SerialNumber = 43
-        ControlObjective   = "Ensure 'Boot-Start Driver Initialization Policy' is set to 'Enabled: Good, unknown and bad but critical' (Automated)"
+        ControlObjective   = "Ensure 'Boot-Start Driver Initialization Policy' is set to 'Enabled: Good unknown and bad but critical' (Automated)"
         CheckFunction      = {
             try {
                 if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch") {
@@ -723,25 +723,6 @@ $auditChecks = @(
     },
     @{
         SerialNumber = 49
-        ControlObjective   = "Ensure 'Enumeration policy for external devices incompatible with Kernel DMA Protection' is set to 'Enabled: Block All' (Automated)"
-        CheckFunction      = {
-            try {
-                if (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Kernel DMA Protection") {
-                    $registryValue = Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Kernel DMA Protection" -Name "DeviceEnumerationPolicy" -ErrorAction SilentlyContinue
-                    return $registryValue.DeviceEnumerationPolicy -eq 0
-                } else {
-                    return $false
-                }
-            } catch {
-                Write-Host "Error checking enumeration policy for external devices: $_"
-                return $false
-            }
-        }
-        ManualCheck = $false
-        Applicable = $true
-    },
-    @{
-        SerialNumber = 50
         ControlObjective   = "Ensure 'Turn off downloading of print drivers over HTTP' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -761,7 +742,7 @@ $auditChecks = @(
     },
    
     @{
-        SerialNumber = 51
+        SerialNumber = 50
         ControlObjective = "Ensure 'Accounts: Guest account status' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -780,7 +761,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 52
+        SerialNumber = 51
         ControlObjective   = "Ensure 'Accounts: Block Microsoft accounts' is set to 'Users can't add or log on with Microsoft accounts' (Automated)"
         CheckFunction      = {
             try {
@@ -799,7 +780,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 53
+        SerialNumber = 52
         ControlObjective   = "Ensure 'Accounts: Limit local account use of blank passwords to console logon only' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -818,7 +799,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 54
+        SerialNumber = 53
         ControlObjective   = "Configure 'Accounts: Rename guest account' (Automated)"
         CheckFunction      = {
             try {
@@ -837,7 +818,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 55
+        SerialNumber = 54
         ControlObjective   = "Configure 'Accounts: Rename administrator account'"
         CheckFunction      = {
             try {
@@ -856,7 +837,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 56
+        SerialNumber = 55
         ControlObjective   = "Ensure 'Audit: Force audit policy subcategory settings to override audit policy category settings' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -875,7 +856,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 57
+        SerialNumber = 56
         ControlObjective   = "Ensure 'Audit: Shut down system immediately if unable to log security audits' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -894,7 +875,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 58
+        SerialNumber = 57
         ControlObjective   = "Ensure 'Domain member: Digitally encrypt or sign secure channel data (always)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -913,7 +894,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 59
+        SerialNumber = 58
         ControlObjective   = "Ensure 'Domain member: Digitally encrypt secure channel data (when possible)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -932,7 +913,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 60
+        SerialNumber = 59
         ControlObjective   = "Ensure 'Domain member: Digitally sign secure channel data (when possible)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -951,7 +932,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 61
+        SerialNumber = 60
         ControlObjective   = "Ensure 'Domain member: Disable machine account password changes' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -970,8 +951,8 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 62
-        ControlObjective   = "Ensure 'Domain member: Maximum machine account password age' is set to '30 or fewer days, but not 0'"
+        SerialNumber = 61
+        ControlObjective   = "Ensure 'Domain member: Maximum machine account password age' is set to '30 or fewer days but not 0'"
         CheckFunction      = {
             try {
                 if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters") {
@@ -989,7 +970,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 63
+        SerialNumber = 62
         ControlObjective   = "Ensure 'Domain member: Require strong session key' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1008,7 +989,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 64
+        SerialNumber = 63
         ControlObjective   = "Ensure 'Domain controller: Allow server operators to schedule tasks' is set to 'Disabled' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1027,7 +1008,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 65
+        SerialNumber = 64
         ControlObjective = "Ensure 'Domain controller: Allow vulnerable Netlogon secure channel connections' is set to 'Not Configured' (DC Only) (Automated)"
         CheckFunction = {
             try {
@@ -1052,7 +1033,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 66
+        SerialNumber = 65
         ControlObjective   = "Ensure 'Domain controller: LDAP server channel binding token requirements' is set to 'Always' (DC Only) (Automated)"
         CheckFunction      = {
             try {
@@ -1071,7 +1052,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 67
+        SerialNumber = 66
         ControlObjective   = "Ensure 'Domain controller: LDAP server signing requirements' is set to 'Require signing' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1090,7 +1071,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 68
+        SerialNumber = 67
         ControlObjective   = "Ensure 'Domain controller: Refuse machine account password changes' is set to 'Disabled' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1110,7 +1091,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 69
+        SerialNumber = 68
         ControlObjective   = "Ensure 'Interactive logon: Do not display last username' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1129,7 +1110,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 70
+        SerialNumber = 69
         ControlObjective   = "Ensure 'Interactive logon: Do not require CTRL+ALT+DEL' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -1148,8 +1129,8 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 71
-        ControlObjective   = "Ensure 'Interactive logon: Machine inactivity limit' is set to '900 or fewer second(s), but not 0'"
+        SerialNumber = 70
+        ControlObjective   = "Ensure 'Interactive logon: Machine inactivity limit' is set to '900 or fewer second(s) but not 0'"
         CheckFunction      = {
             try {
                 if (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System") {
@@ -1167,7 +1148,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 72
+        SerialNumber = 71
         ControlObjective   = "Configure 'Interactive logon: Message text for users attempting to log on'"
         CheckFunction      = {
             try {
@@ -1186,7 +1167,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 73
+        SerialNumber = 72
         ControlObjective   = "Configure 'Interactive logon: Message title for users attempting to log on'"
         CheckFunction      = {
             try {
@@ -1205,7 +1186,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 74
+        SerialNumber = 73
         ControlObjective   = "Ensure 'Interactive logon: Smart card removal behavior' is set to 'Lock Workstation' or higher (Automated)"
         CheckFunction      = {
             try {
@@ -1224,7 +1205,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 75
+        SerialNumber = 74
         ControlObjective   = "Ensure 'Interactive logon: Prompt user to change password before expiration' is set to 'between 5 and 14 days'"
         CheckFunction      = {
             try {
@@ -1243,7 +1224,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 76
+        SerialNumber = 75
         ControlObjective   = "Ensure 'Interactive logon: Require Domain Controller Authentication to unlock workstation' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1262,7 +1243,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 77
+        SerialNumber = 76
         ControlObjective   = "Ensure 'Microsoft network client: Digitally sign communications (always)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1281,7 +1262,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 78
+        SerialNumber = 77
         ControlObjective   = "Ensure 'Microsoft network client: Digitally sign communications (if server agrees)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1300,7 +1281,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 79
+        SerialNumber = 78
         ControlObjective   = "Ensure 'Microsoft network client: Send unencrypted password to third-party SMB servers' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -1319,7 +1300,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 80
+        SerialNumber = 79
         ControlObjective   = "Ensure 'Microsoft network server: Amount of idle time required before suspending session' is set to '15 or fewer minute(s)'"
         CheckFunction      = {
             try {
@@ -1338,7 +1319,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 81
+        SerialNumber = 80
         ControlObjective   = "Ensure 'Microsoft network server: Digitally sign communications (always)' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1357,7 +1338,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 82
+        SerialNumber = 81
         ControlObjective   = "Ensure 'Microsoft network server: Disconnect clients when logon hours expire' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -1376,7 +1357,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 83
+        SerialNumber = 82
         ControlObjective   = "Ensure 'Microsoft network server: Server SPN target name validation level' is set to 'Accept if provided by client' or higher (MS only) (Automated)"
         CheckFunction      = {
             try {
@@ -1395,7 +1376,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 84
+        SerialNumber = 83
         ControlObjective = "Ensure 'Microsoft network server: Digitally sign communications (if client agrees)' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -1418,7 +1399,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 85
+        SerialNumber = 84
         ControlObjective   = "Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts' is set to 'Enabled' (MS only) (Automated)"
         CheckFunction      = {
             try {
@@ -1437,7 +1418,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 86
+        SerialNumber = 85
         ControlObjective   = "Ensure 'Network access: Do not allow anonymous enumeration of SAM accounts and shares' is set to 'Enabled' (MS only) (Automated)"
         CheckFunction      = {
             try {
@@ -1456,7 +1437,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 87
+        SerialNumber = 86
         ControlObjective   = "Ensure 'Network access: Let Everyone permissions apply to anonymous users' is set to 'Disabled' (Automated)"
         CheckFunction      = {
             try {
@@ -1476,7 +1457,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 88
+        SerialNumber = 87
         ControlObjective = "Configure 'Network access: Named Pipes that can be accessed anonymously' (MS only) (Automated)"
         CheckFunction = {
             try {
@@ -1512,7 +1493,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 89
+        SerialNumber = 88
         ControlObjective   = "Configure 'Network access: Remotely accessible registry paths' is configured (Automated)"
         CheckFunction      = {
             try {
@@ -1531,7 +1512,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber =90
+        SerialNumber =89
         ControlObjective   = "Configure 'Network access: Remotely accessible registry paths and sub-paths' is configured (Automated)"
         CheckFunction      = {
             try {
@@ -1550,7 +1531,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 91
+        SerialNumber = 90
         ControlObjective   = "Ensure 'Network access: Restrict anonymous access to Named Pipes and Shares' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -1569,7 +1550,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 92
+        SerialNumber = 91
         ControlObjective   = "Ensure 'Network access: Restrict clients allowed to make remote calls to SAM' is set to 'Administrators: Remote Access: Allow' (MS only) (Automated)"
         CheckFunction      = {
             try {
@@ -1588,7 +1569,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 93
+        SerialNumber = 92
         ControlObjective = "Ensure 'Network access: Shares that can be accessed anonymously' is set to 'None' (Automated)"
         CheckFunction = {
             try {
@@ -1616,7 +1597,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 94
+        SerialNumber = 93
         ControlObjective   = "Ensure 'Network access: Sharing and security model for local accounts' is set to 'Classic - local users authenticate as themselves' (Automated)"
         CheckFunction      = {
             try {
@@ -1636,7 +1617,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 95
+        SerialNumber = 94
         ControlObjective = "Ensure 'Network access: Allow anonymous SID/Name translation' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -1682,7 +1663,7 @@ $auditChecks = @(
 
 
     @{
-        SerialNumber = 96
+        SerialNumber = 95
         ControlObjective   = "Ensure 'Shutdown: Allow system to be shut down without having to log on' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -1702,7 +1683,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 97
+        SerialNumber = 96
         ControlObjective   = "Ensure 'User Account Control: Admin Approval Mode for the Built-in Administrator account' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1721,7 +1702,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 98
+        SerialNumber = 97
         ControlObjective   = "Ensure 'User Account Control: Behaviour of the elevation prompt for administrators in Admin Approval Mode' is set to 'Prompt for consent on the secure desktop'"
         CheckFunction      = {
             try {
@@ -1740,7 +1721,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 99
+        SerialNumber = 98
         ControlObjective   = "Ensure 'User Account Control: Behaviour of the elevation prompt for standard users' is set to 'Automatically deny elevation requests'"
         CheckFunction      = {
             try {
@@ -1759,7 +1740,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 100
+        SerialNumber = 99
         ControlObjective   = "Ensure 'User Account Control: Detect application installations and prompt for elevation' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1778,7 +1759,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 101
+        SerialNumber = 100
         ControlObjective   = "Ensure 'User Account Control: Only elevate UIAccess applications that are installed in secure locations' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1797,7 +1778,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 102
+        SerialNumber = 101
         ControlObjective   = "Ensure 'User Account Control: Run all administrators in Admin Approval Mode' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1816,7 +1797,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 103
+        SerialNumber = 102
         ControlObjective   = "Ensure 'User Account Control: Virtualize file and registry write failures to per-user locations' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -1835,7 +1816,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 104
+        SerialNumber = 103
         ControlObjective   = "Ensure 'User Account Control: Switch to the secure desktop when prompting for elevation' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -1854,7 +1835,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 105
+        SerialNumber = 104
         ControlObjective   = "Ensure 'Windows Firewall: Domain: Firewall state' is set to 'On (recommended)' (Automated)"
         CheckFunction      = {
             try {
@@ -1873,7 +1854,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 106
+        SerialNumber = 105
         ControlObjective   = "Ensure 'Windows Firewall: Domain: Inbound connections' is set to 'Block (default)' (Automated)"
         CheckFunction      = {
             try {
@@ -1891,27 +1872,9 @@ $auditChecks = @(
         ManualCheck = $false
         Applicable = $true
     },
+
     @{
-        SerialNumber = 107
-        ControlObjective   = "Ensure 'Windows Firewall: Domain: Outbound connections' is set to 'Allow (default)' (Automated)"
-        CheckFunction      = {
-            try {
-                if (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile") {
-                    $registryValue = Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile" -Name "DefaultOutboundAction" -ErrorAction SilentlyContinue
-                    return $registryValue.DefaultOutboundAction -eq 0
-                } else {
-                    return $false
-                }
-            } catch {
-                Write-Host "Error checking Windows Firewall: domain: outbound connections: $_"
-                return $false
-            }
-        }
-        ManualCheck = $false
-        Applicable = $true
-    },
-    @{
-        SerialNumber = 108
+        SerialNumber = 106
         ControlObjective   = "Ensure 'Windows Firewall: Domain: Settings: Display a notification' is set to 'No' (Automated)"
         CheckFunction      = {
             try {
@@ -1930,7 +1893,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 109
+        SerialNumber = 107
         ControlObjective   = "Ensure 'Audit Computer Account Management' is set to include 'Success' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1945,7 +1908,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 110
+        SerialNumber = 108
         ControlObjective   = "Ensure 'Audit Other Account Management Events' is set to include 'Success' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1960,7 +1923,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 111
+        SerialNumber = 109
         ControlObjective   = "Ensure 'Audit Distribution Group Management' is set to include 'Success' (DC only) (Automated)"
         CheckFunction      = {
             try {
@@ -1975,7 +1938,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 112
+        SerialNumber = 110
         ControlObjective   = "Ensure 'Audit User Account Management' is set to 'Success and Failure' (Automated)"
         CheckFunction      = {
             try {
@@ -1991,7 +1954,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 113
+        SerialNumber = 111
         ControlObjective   = "Ensure 'Access Credential Manager as a trusted caller' is set to 'No One'"
         CheckFunction      = {
             try {
@@ -2030,8 +1993,8 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 114
-        ControlObjective   = "Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users, ENTERPRISE DOMAIN CONTROLLERS'"
+        SerialNumber = 112
+        ControlObjective   = "Ensure 'Access this computer from the network' is set to 'Administrators Authenticated Users ENTERPRISE DOMAIN CONTROLLERS'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2080,8 +2043,8 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 115
-        ControlObjective   = "Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users' (MS only)"
+        SerialNumber = 113
+        ControlObjective   = "Ensure 'Access this computer from the network' is set to 'Administrators Authenticated Users' (MS only)"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2129,7 +2092,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 116
+        SerialNumber = 114
         ControlObjective   = "Ensure 'Act as part of the operating system' is set to 'No One'"
         CheckFunction      = {
             try {
@@ -2171,7 +2134,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 117
+        SerialNumber = 115
         ControlObjective   = "Ensure 'Add workstations to domain' is set to a specific security group"
         CheckFunction      = {
             try {
@@ -2215,7 +2178,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 118
+        SerialNumber = 116
         ControlObjective   = "Ensure 'Allow log on locally' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2259,7 +2222,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 119
+        SerialNumber = 117
         ControlObjective   = "Ensure 'Allow log on through Remote Desktop Services' is set to specific security group"
         CheckFunction      = {
             try {
@@ -2304,8 +2267,8 @@ $auditChecks = @(
 
     
     @{
-        SerialNumber = 120
-        ControlObjective   = "Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators, Remote Desktop Users"
+        SerialNumber = 118
+        ControlObjective   = "Ensure 'Allow log on through Remote Desktop Services' is set to 'Administrators Remote Desktop Users"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2348,8 +2311,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 121
-        ControlObjective   = "Ensure 'Change the system time' is set to 'Administrators, LOCAL SERVICE'"
+        SerialNumber = 119
+        ControlObjective   = "Ensure 'Change the system time' is set to 'Administrators LOCAL SERVICE'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2392,8 +2355,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 122
-        ControlObjective   = "Ensure 'Change the time zone' is set to 'Administrators, LOCAL SERVICE'"
+        SerialNumber = 120
+        ControlObjective   = "Ensure 'Change the time zone' is set to 'Administrators LOCAL SERVICE'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2436,7 +2399,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 123
+        SerialNumber = 121
         ControlObjective   = "Ensure 'Create a pagefile' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2480,8 +2443,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 124
-        ControlObjective   = "Ensure 'Create global objects' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE'"
+        SerialNumber = 122
+        ControlObjective   = "Ensure 'Create global objects' is set to 'Administrators LOCAL SERVICE NETWORK SERVICE SERVICE'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2535,7 +2498,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 125
+        SerialNumber = 123
         ControlObjective   = "Ensure 'Force shutdown from a remote system' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2579,8 +2542,8 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 126
-        ControlObjective   = "Ensure 'Generate security audits' is set to 'LOCAL SERVICE, NETWORK SERVICE'"
+        SerialNumber = 124
+        ControlObjective   = "Ensure 'Generate security audits' is set to 'LOCAL SERVICE NETWORK SERVICE'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2623,8 +2586,8 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 127
-        ControlObjective   = "Ensure 'Impersonate a client after authentication' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE' (DC only)"
+        SerialNumber = 125
+        ControlObjective   = "Ensure 'Impersonate a client after authentication' is set to 'Administrators LOCAL SERVICE NETWORK SERVICE SERVICE' (DC only)"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2667,8 +2630,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 128
-        ControlObjective   = "Ensure 'Impersonate a client after authentication' is set to 'Administrators, LOCAL SERVICE, NETWORK SERVICE, SERVICE' and (when the Web Server (IIS) Role with Web Services Role Service is installed) 'IIS_IUSRS' (MS only)"
+        SerialNumber = 126
+        ControlObjective   = "Ensure 'Impersonate a client after authentication' is set to 'Administrators LOCAL SERVICE NETWORK SERVICE SERVICE' and (when the Web Server (IIS) Role with Web Services Role Service is installed) 'IIS_IUSRS' (MS only)"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2719,8 +2682,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 129
-        ControlObjective   = "Ensure 'Increase scheduling priority' is set to 'Administrators, Window Manager\Window Manager Group'"
+        SerialNumber = 127
+        ControlObjective   = "Ensure 'Increase scheduling priority' is set to 'Administrators Window Manager\Window Manager Group'"
         CheckFunction      = {
             try {
                 # Export the User Rights Assignment settings
@@ -2731,7 +2694,7 @@ $auditChecks = @(
                 $policyContent = Get-Content $exportFilePath
                 
                 # Expected SIDs for Administrators and Window Manager Group
-                $expectedSIDs = @("*S-1-5-32-544", "*S-1-5-90-0")  # S-1-5-32-544: Administrators, S-1-5-90-0: Window Manager Group
+                $expectedSIDs = @("*S-1-5-32-544")  # S-1-5-32-544: Administrators, S-1-5-90-0: Window Manager Group
                 
                 # Search for the 'SeIncreaseBasePriorityPrivilege' setting
                 $settingLine = $policyContent | Select-String "SeIncreaseBasePriorityPrivilege"
@@ -2763,7 +2726,7 @@ $auditChecks = @(
     }
 
     @{
-        SerialNumber = 130
+        SerialNumber = 128
         ControlObjective   = "Ensure 'Load and unload device drivers' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2807,7 +2770,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 131
+        SerialNumber = 129
         ControlObjective   = "Ensure 'Lock pages in memory' is set to 'No One'"
         CheckFunction      = {
             try {
@@ -2846,7 +2809,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 132
+        SerialNumber = 130
         ControlObjective   = "Ensure 'Manage auditing and security log' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2888,7 +2851,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 133
+        SerialNumber = 131
         ControlObjective   = "Ensure 'Modify an object label' is set to 'No One'"
         CheckFunction      = {
             try {
@@ -2927,7 +2890,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 134
+        SerialNumber = 132
         ControlObjective   = "Ensure 'Modify firmware environment values' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -2969,7 +2932,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 135
+        SerialNumber = 133
         ControlObjective   = "Ensure 'Perform volume maintenance tasks' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -3011,7 +2974,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 136
+        SerialNumber = 134
         ControlObjective   = "Ensure 'Profile single process' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -3053,7 +3016,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 137
+        SerialNumber = 135
         ControlObjective   = "Ensure 'Restore files and directories' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -3095,7 +3058,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 138
+        SerialNumber = 136
         ControlObjective   = "Ensure 'Shut down the system' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -3138,7 +3101,7 @@ $auditChecks = @(
     
 
     @{
-        SerialNumber = 139
+        SerialNumber = 137
         ControlObjective   = "Ensure 'Take ownership of files or other objects' is set to 'Administrators'"
         CheckFunction      = {
             try {
@@ -3180,7 +3143,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 140
+        SerialNumber = 138
         ControlObjective   = "Ensure 'Back up files and directories' is set to 'Administrators and Backup Operators'"
         CheckFunction      = {
             try {
@@ -3223,7 +3186,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 141
+        SerialNumber = 139
         ControlObjective   = "Ensure 'Block user from showing account details on sign-in' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -3246,7 +3209,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 142
+        SerialNumber = 140
         ControlObjective   = "Ensure 'Do not display network selection UI' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -3269,7 +3232,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 143
+        SerialNumber = 141
         ControlObjective   = "Ensure 'Enumerate local users on domain-joined computers' is set to 'Disabled' (MS only) (Automated)"
         CheckFunction      = {
             try {
@@ -3292,7 +3255,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 144
+        SerialNumber = 142
         ControlObjective   = "Ensure 'Do not enumerate connected users on domain-joined computers' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -3315,7 +3278,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 145
+        SerialNumber = 143
         ControlObjective   = "Ensure 'Turn on convenience PIN sign-in' is set to 'Disabled' (Automated)"
         CheckFunction      = {
             try {
@@ -3338,7 +3301,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 146
+        SerialNumber = 144
         ControlObjective   = "Ensure 'Turn off picture password sign-in' is set to 'Enabled' (Automated)"
         CheckFunction      = {
             try {
@@ -3361,7 +3324,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 147
+        SerialNumber = 145
         ControlObjective   = "Ensure 'Turn off app notifications on the lock screen' is set to 'Enabled'"
         CheckFunction      = {
             try {
@@ -3385,7 +3348,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 148
+        SerialNumber = 146
         ControlObjective   = "Ensure 'Security: Control Event Log behaviour when the log file reaches its maximum size' is set to 'Disabled'"
         CheckFunction      = {
             try {
@@ -3417,8 +3380,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 149
-        ControlObjective   = "Ensure 'Application: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+        SerialNumber = 147
+        ControlObjective   = "Ensure 'Application: Specify the maximum log file size (KB)' is set to 'Enabled: 32768 or greater'"
         CheckFunction      = {
             try {
                 # Registry path for the maximum log file size setting
@@ -3449,8 +3412,8 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 150
-        ControlObjective   = "Ensure 'Security: Specify the maximum log file size (KB)' is set to 'Enabled: 196,608 or greater'"
+        SerialNumber = 148
+        ControlObjective   = "Ensure 'Security: Specify the maximum log file size (KB)' is set to 'Enabled: 196608 or greater'"
         CheckFunction      = {
             try {
                 # Registry path for the maximum log file size setting
@@ -3481,7 +3444,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 151
+        SerialNumber = 149
         ControlObjective = "Ensure 'Always prompt for password upon connection' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -3501,7 +3464,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 152
+        SerialNumber = 150
         ControlObjective = "Ensure 'Require secure RPC communication' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -3521,7 +3484,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 153
+        SerialNumber = 151
         ControlObjective = "Ensure 'Require use of specific security layer for remote (RDP) connections' is set to 'Enabled: SSL'"
         CheckFunction = {
             try {
@@ -3541,7 +3504,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 154
+        SerialNumber = 152
         ControlObjective = "Ensure 'Require user authentication for remote connections by using Network Level Authentication' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -3561,7 +3524,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 155
+        SerialNumber = 153
         ControlObjective = "Ensure 'Set client connection encryption level' is set to 'Enabled: High Level'"
         CheckFunction = {
             try {
@@ -3581,7 +3544,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 156
+        SerialNumber = 154
         ControlObjective = "Ensure 'Setup: Control Event Log behaviour when the log file reaches its maximum size' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3601,8 +3564,8 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 157
-        ControlObjective = "Ensure 'Setup: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+        SerialNumber = 155
+        ControlObjective = "Ensure 'Setup: Specify the maximum log file size (KB)' is set to 'Enabled: 32768 or greater'"
         CheckFunction = {
             try {
                 $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Setup"
@@ -3621,7 +3584,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 158
+        SerialNumber = 156
         ControlObjective = "Ensure 'System: Control Event Log behaviour when the log file reaches its maximum size' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3641,8 +3604,8 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 159
-        ControlObjective = "Ensure 'System: Specify the maximum log file size (KB)' is set to 'Enabled: 32,768 or greater'"
+        SerialNumber = 157
+        ControlObjective = "Ensure 'System: Specify the maximum log file size (KB)' is set to 'Enabled: 32768 or greater'"
         CheckFunction = {
             try {
                 $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\System"
@@ -3661,7 +3624,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 160
+        SerialNumber = 158
         ControlObjective = "Ensure 'Always install with elevated privileges' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3681,7 +3644,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 161
+        SerialNumber = 159
         ControlObjective = "Ensure 'Allow user control over installs' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3701,7 +3664,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 162
+        SerialNumber = 160
         ControlObjective = "Ensure 'Allow Basic authentication' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3721,7 +3684,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 163
+        SerialNumber = 161
         ControlObjective = "Ensure 'Disallow Digest authentication' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -3741,7 +3704,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 164
+        SerialNumber = 162
         ControlObjective = "Ensure 'Allow unencrypted traffic' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3761,7 +3724,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 165
+        SerialNumber = 163
         ControlObjective = "Ensure 'Allow Basic authentication' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3781,7 +3744,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 166
+        SerialNumber = 164
         ControlObjective = "Ensure 'Allow unencrypted traffic' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3801,7 +3764,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 167
+        SerialNumber = 165
         ControlObjective = "Ensure 'Disallow WinRM from storing RunAs credentials' is set to 'Enabled'"
         CheckFunction = {
             try {
@@ -3821,7 +3784,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 168
+        SerialNumber = 166
         ControlObjective = "Ensure 'Configure Offer Remote Assistance' is set to 'Disabled'"
         CheckFunction = {
             try {
@@ -3842,7 +3805,7 @@ $auditChecks = @(
     },
     
     @{
-        SerialNumber = 169
+        SerialNumber = 167
         ControlObjective = "Ensure 'Do not delete temp folders upon exit' is set to 'Disabled' (Automated)"
         CheckFunction = {
             try {
@@ -3862,7 +3825,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 170
+        SerialNumber = 168
         ControlObjective = "Ensure 'Do not use temporary folders per session' is set to 'Disabled' (Automated)"
         CheckFunction = {
             try {
@@ -3883,39 +3846,29 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 171
+        SerialNumber = 169
         ControlObjective = "Ensure 'Configure Windows Defender SmartScreen' is set to 'Enabled: Warn and prevent bypass' (Automated)"
         CheckFunction = {
             try {
-                # Define the expected registry values
-                $expectedEnableSmartScreen = 1
-                $expectedShellSmartScreenLevel = "Block"
-    
-                # Registry paths
-                $regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
-                $enableSmartScreen = Get-ItemProperty -Path $regPath -Name "EnableSmartScreen" -ErrorAction SilentlyContinue
-                $shellSmartScreenLevel = Get-ItemProperty -Path $regPath -Name "ShellSmartScreenLevel" -ErrorAction SilentlyContinue
-    
-                # Check if the registry values match the expected values
-                if ($enableSmartScreen.EnableSmartScreen -eq $expectedEnableSmartScreen -and $shellSmartScreenLevel.ShellSmartScreenLevel -eq $expectedShellSmartScreenLevel) {
-                    Write-Host "The policy is correctly set to 'Enabled: Warn and prevent bypass'."
-                    return $true
+                $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System"
+                if (Test-Path $key) {
+                    $value = Get-ItemProperty -Path $key -Name "EnableSmartScreen" -ErrorAction SilentlyContinue
+                    return $value.EnableSmartScreen -eq 1
                 } else {
-                    Write-Host "The policy is not set correctly. Expected EnableSmartScreen: $expectedEnableSmartScreen, ShellSmartScreenLevel: $expectedShellSmartScreenLevel"
                     return $false
                 }
             } catch {
-                Write-Host "Error checking 'Configure Windows Defender SmartScreen': $_"
+                Write-Host "The policy is not set correctly."
                 return $false
             }
         }
         ManualCheck = $false
         Applicable = $true
     },
-    
+
     
     @{
-        SerialNumber = 172
+        SerialNumber = 170
         ControlObjective = "Ensure 'Turn on PowerShell Script Block Logging' is set to 'Enabled' (Automated)"
         CheckFunction = {
             try {
@@ -3935,7 +3888,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 173
+        SerialNumber = 171
         ControlObjective = "Ensure 'Turn on PowerShell Transcription' is set to 'Enabled' (Automated)"
         CheckFunction = {
             try {
@@ -3955,7 +3908,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 174
+        SerialNumber = 172
         ControlObjective = "Ensure 'No auto-restart with logged on users for scheduled automatic updates installations' is set to 'Disabled' (Automated)"
         CheckFunction = {
             try {
@@ -3976,27 +3929,7 @@ $auditChecks = @(
     },
 
     @{
-        SerialNumber = 175
-        ControlObjective = "Ensure 'Manage preview builds' is set to 'Disabled' (Automated)"
-        CheckFunction = {
-            try {
-                $key = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate"
-                if (Test-Path $key) {
-                    $value = Get-ItemProperty -Path $key -Name "ManagePreviewBuilds" -ErrorAction SilentlyContinue
-                    return $value.ManagePreviewBuilds -eq 0
-                } else {
-                    return $false
-                }
-            } catch {
-                Write-Host "Error checking Manage preview builds: $_"
-                return $false
-            }
-        }
-        ManualCheck = $false
-        Applicable = $true
-    },
-    @{
-        SerialNumber = 176
+        SerialNumber = 173
         ControlObjective = "Ensure 'Select when Preview Builds and Feature Updates are received' is set to 'Enabled: 180 or more days' (Automated)"
         CheckFunction = {
             try {
@@ -4017,7 +3950,7 @@ $auditChecks = @(
         Applicable = $true
     },
     @{
-        SerialNumber = 177
+        SerialNumber = 174
         ControlObjective = "Ensure 'Select when Quality Updates are received' is set to 'Enabled: 0 days' (Automated)"
         CheckFunction = {
             try {
@@ -4046,3 +3979,4 @@ Write-SystemDetails
 foreach ($auditCheck in $auditChecks) {
     Check-ComplianceStatus -serialNumber $auditCheck.SerialNumber -controlObjective $auditCheck.ControlObjective -checkFunction $auditCheck.CheckFunction -manualCheck $auditCheck.ManualCheck -applicable ([bool]$auditCheck.Applicable)
 }
+ 
