@@ -1,0 +1,18 @@
+Instructions to run the script:
+
+Open PowerShell as Administrator:
+Click on the Start menu, type powershell, right-click on Windows PowerShell, and select Run as administrator.
+
+Set Execution Policy: Run the following command in the PowerShell window to allow script execution:
+    Set-ExecutionPolicy RemoteSigned
+If prompted, type Y to confirm.
+
+Set Execution Policy: Run the following command in the PowerShell window to allow script execution:
+    Set-ExecutionPolicy Unrestricted
+If prompted, type Y to confirm.
+
+Navigate to the Script Location: Use the cd command to navigate to the directory where you saved the script:
+    cd C:\path\to\your\script\2019-Windows-Server.ps1
+
+Run the Script: Execute the script by typing its name:
+    powershell .\2019-Windows-Server.ps1
